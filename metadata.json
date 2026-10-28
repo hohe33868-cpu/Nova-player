@@ -1,0 +1,6 @@
+{
+  "name": "NOVA Player",
+  "description": "High-fidelity local music & video player with continuous background playback, media session controls, equalizer, sleep timer, and custom themes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
