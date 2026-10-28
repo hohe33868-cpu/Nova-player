@@ -1,11 +1,8 @@
-import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
-
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.google.devtools.ksp)
   alias(libs.plugins.secrets)
-  alias(libs.plugins.google.services)
 }
 
 android {
@@ -30,7 +27,6 @@ android {
       keyAlias = "upload"
       keyPassword = System.getenv("KEY_PASSWORD")
     }
-    // تم استخدام التوقيع الافتراضي للبناء لتجنب خطأ الملف المفقود
     getByName("debug") {
       storeFile = file("${rootDir}/debug.keystore")
       storePassword = "android"
@@ -47,7 +43,6 @@ android {
       signingConfig = signingConfigs.getByName("release")
     }
     debug {
-      // تم التعديل ليستخدم التوقيع الافتراضي المتاح بدلاً من debugConfig المفقود
       signingConfig = signingConfigs.getByName("debug")
     }
   }
@@ -73,8 +68,6 @@ secrets {
   defaultPropertiesFileName = ".env.example"
   ignoreList.add("FIREBASE_APPCHECK_DEBUG_TOKEN")
 }
-
-googleServices { missingGoogleServicesStrategy = MissingGoogleServicesStrategy.WARN }
 
 // Some unused dependencies are commented out below instead of being removed.
 // This makes it easy to add them back in the future if needed.
