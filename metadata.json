@@ -1,6 +1,6 @@
 {
-  "name": "NOVA Player",
-  "description": "High-fidelity local music & video player with continuous background playback, media session controls, equalizer, sleep timer, and custom themes.",
+  "name": "JARVIS AI",
+  "description": "Visual AI assistant & autonomous agent with CameraX computer vision, screen intelligence, multi-step task planner, modular tool calling, and holographic HUD.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

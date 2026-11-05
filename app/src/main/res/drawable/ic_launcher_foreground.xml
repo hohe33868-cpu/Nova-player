@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/nova_launcher_fg_1793191683769"
+        android:drawable="@drawable/jarvis_launcher_fg_1793911921545"
         android:gravity="center" />
 </layer-list>

@@ -1,12 +1,112 @@
 package com.example.data.local.dao
 
 import androidx.room.*
-import com.example.data.local.entities.FavoriteEntity
-import com.example.data.local.entities.PlaybackHistoryEntity
-import com.example.data.local.entities.PlaylistEntity
-import com.example.data.local.entities.PlaylistTrackEntity
+import com.example.data.local.entities.*
 import kotlinx.coroutines.flow.Flow
 
+@Dao
+interface TaskDao {
+    @Query("SELECT * FROM jarvis_tasks ORDER BY isCompleted ASC, createdAt DESC")
+    fun getAllTasks(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM jarvis_tasks WHERE id = :id LIMIT 1")
+    suspend fun getTaskById(id: Long): TaskEntity?
+
+    @Query("SELECT * FROM jarvis_tasks WHERE isCompleted = 0 ORDER BY createdAt DESC")
+    suspend fun getPendingTasks(): List<TaskEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTask(task: TaskEntity): Long
+
+    @Update
+    suspend fun updateTask(task: TaskEntity)
+
+    @Delete
+    suspend fun deleteTask(task: TaskEntity)
+
+    @Query("DELETE FROM jarvis_tasks WHERE id = :id")
+    suspend fun deleteTaskById(id: Long)
+
+    @Query("UPDATE jarvis_tasks SET isCompleted = :completed WHERE id = :id")
+    suspend fun setTaskCompleted(id: Long, completed: Boolean)
+}
+
+@Dao
+interface NoteDao {
+    @Query("SELECT * FROM jarvis_notes ORDER BY updatedAt DESC")
+    fun getAllNotes(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM jarvis_notes WHERE id = :id LIMIT 1")
+    suspend fun getNoteById(id: Long): NoteEntity?
+
+    @Query("SELECT * FROM jarvis_notes WHERE title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%'")
+    suspend fun searchNotes(query: String): List<NoteEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNote(note: NoteEntity): Long
+
+    @Update
+    suspend fun updateNote(note: NoteEntity)
+
+    @Delete
+    suspend fun deleteNote(note: NoteEntity)
+
+    @Query("DELETE FROM jarvis_notes WHERE id = :id")
+    suspend fun deleteNoteById(id: Long)
+}
+
+@Dao
+interface MemoryDao {
+    @Query("SELECT * FROM jarvis_memory ORDER BY updatedAt DESC")
+    fun getAllMemories(): Flow<List<MemoryEntity>>
+
+    @Query("SELECT * FROM jarvis_memory WHERE `key` = :key LIMIT 1")
+    suspend fun getMemoryByKey(key: String): MemoryEntity?
+
+    @Query("SELECT * FROM jarvis_memory WHERE category = :category ORDER BY updatedAt DESC")
+    fun getMemoriesByCategory(category: String): Flow<List<MemoryEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMemory(memory: MemoryEntity): Long
+
+    @Query("DELETE FROM jarvis_memory WHERE id = :id")
+    suspend fun deleteMemoryById(id: Long)
+
+    @Query("DELETE FROM jarvis_memory WHERE `key` = :key")
+    suspend fun deleteMemoryByKey(key: String)
+}
+
+@Dao
+interface ActionLogDao {
+    @Query("SELECT * FROM jarvis_action_logs ORDER BY timestamp DESC LIMIT 100")
+    fun getRecentLogs(): Flow<List<ActionLogEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLog(log: ActionLogEntity): Long
+
+    @Query("DELETE FROM jarvis_action_logs")
+    suspend fun clearLogs()
+}
+
+@Dao
+interface PlanDao {
+    @Query("SELECT * FROM jarvis_plans ORDER BY createdAt DESC")
+    fun getAllPlans(): Flow<List<PlanEntity>>
+
+    @Query("SELECT * FROM jarvis_plans ORDER BY createdAt DESC LIMIT 1")
+    fun getLatestPlan(): Flow<PlanEntity?>
+
+    @Query("SELECT * FROM jarvis_plans WHERE id = :id LIMIT 1")
+    suspend fun getPlanById(id: Long): PlanEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlan(plan: PlanEntity): Long
+
+    @Update
+    suspend fun updatePlan(plan: PlanEntity)
+}
+
+// Legacy music DAOs
 @Dao
 interface PlaylistDao {
     @Query("SELECT * FROM playlists ORDER BY name ASC")

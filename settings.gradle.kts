@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "NOVA Player"
+rootProject.name = "JARVIS AI"
 
 include(":app")
